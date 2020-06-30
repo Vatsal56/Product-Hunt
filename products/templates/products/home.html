@@ -2,6 +2,65 @@
 
 {% block content %}
 
+    <br>
 
+    <div class="jumbotron">
 
-{% endblock %}
+        <h1 class="text-center">Products</h1>
+
+        <hr>
+        
+        {% for product in products.all %}
+
+            <div class="row">
+
+                <div style="display: flex; align-items: center; justify-content: center;" class="col-3">
+
+                    <img src="{{ product.icon.url }}" class="img-fluid">
+
+                </div>
+
+                <div class="col-6">
+
+                    <h5 class="text-center">{{ product.title }}</h5>
+                    <p class="text-center">{{ product.summary }}</p>
+
+                </div>
+
+                <div style="display: flex; align-items: center; justify-content: center;" class="col-3">
+
+                    <div style="border-right: 1px solid #333;" class="col-6">
+
+                        <a href="{% url 'detail' product.id %}" style="text-decoration: none;"><button type="button" class="btn btn-outline-info btn-block">Details</button></a>
+
+                    </div>
+
+                    <div class="col-6">
+                    
+                        {% if user.is_authenticated %}
+
+                            <a href="javascript:{document.getElementById('upvote{{ product.id }}').submit()}" style="text-decoration: none;"><button type="button" class="btn btn-primary btn-block">Upvote</button></a>
+
+                        {% else %}
+
+                            <button type="button" class="btn btn-primary btn-block" disabled>Upvote</button>
+
+                        {% endif %}
+                        
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <form method="POST" id="upvote{{ product.id }}" action="{% url 'upvote' product.id %}">
+                <input type="hidden">
+            </form>
+
+        {% endfor %}
+
+    </div>
+
+{% endblock content %}

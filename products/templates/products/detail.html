@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<br>
+<div class="jumbotron">
+
+	<div class="row">
+	
+		<div style="border-right: 1px solid #333;" class="col-4">
+		
+			<img style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" src="{{ product.icon.url }}" class="img-fluid">
+
+		</div>
+
+		<div class="col-8">
+		
+			<a style="text-decoration: none; text-align: center;" href="{{ product.url }}" target="_blank"><h2>{{ product.title }}</h2></a>
+
+		</div>
+
+	</div>
+
+	<hr class="my-4">
+
+	<div class="row">
+		
+		<div class="col-2">
+
+		</div>
+
+		<div style="display: flex; align-items: center; justify-content: center;" class="col-4">
+			
+			<h5>Hunted by: {{ product.hunter }}</h5>
+
+		</div>
+
+		<div style="display: flex; align-items: center; justify-content: center;" class="col-4">
+			
+			<h5>Published on: {{ product.pub_date_pretty }}</h5>
+
+		</div>
+
+		<div class="col-2">
+
+		</div>
+
+	</div>
+
+	<p></p>
+
+	<div class="row">
+
+		<div class="col-7">
+			
+			<img class="rounded mx-auto d-block img-fluid" src="{{ product.image.url }}">
+
+		</div>
+
+		<div style="display: flex; align-items: center; justify-content: center;" class="col-5 text-center d-flex align-items-center">
+				
+			<p>{{ product.body }}</p>
+
+		</div>
+		
+	</div>
+
+	<br>
+
+	<div class="row">
+		
+		<div class="col-8">
+
+			{% if user.is_authenticated %}
+
+				<a href="javascript:{document.getElementById('upvote').submit()}" style="text-decoration: none;"><button type="button" class="btn btn-primary btn-lg btn-block"><span class="oi oi-thumb-up"></span> Upvote</button></a>
+
+			{% else %}
+
+				<button type="button" class="btn btn-primary btn-lg btn-block" disabled>Log In or Sign Up to Vote</button>
+
+			{% endif %}
+
+		</div>
+
+		<div style="display: flex; align-items: center; justify-content: center;" class="col-3">
+			
+			<h5>Current Vote Count:</h5>
+
+		</div>
+
+		<div class="col-1 text-center d-flex align-items-center">
+			
+			<h4>{{ product.votes_total }}</h4>
+
+		</div>
+
+	</div>
+
+</div>
+
+<form id="upvote" method="POST" action="{% url 'upvote' product.id %}">
+
+	{% csrf_token %}
+	<input type="hidden" >
+
+</form>
+
+{% endblock %}
